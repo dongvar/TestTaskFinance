@@ -46,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <h5 class="header5">Таблица задолженностей по органам государственных доходов</h5>
 
+<? if(!empty($financeData['taxOrgInfo'])) : ?>
 <? foreach($financeData['taxOrgInfo'] as $taxOrgInfo) : ?>
 
 <div class="iblock">
@@ -78,6 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <h5 class="header5">Таблица задолженностей по налогоплательщику и его структурным подразделениям</h5>
 
+<? if(!empty($taxOrgInfo['taxPayerInfo'])) : ?>
 <? foreach($taxOrgInfo['taxPayerInfo'] as $taxPayerInfo) : ?>
 
 <table class="info1">
@@ -108,7 +110,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </tr>
    </thead>
    <tbody>
-   
+
+<? if(!empty($taxPayerInfo['bccArrearsInfo'])) : ?>   
 <? foreach($taxPayerInfo['bccArrearsInfo'] as $bccArrearsInfo) : ?>
    
     <tr>
@@ -121,15 +124,16 @@ $this->params['breadcrumbs'][] = $this->title;
     </tr>
 
 <? endforeach; ?>
-    
+<? endif; ?>    
   </tbody>
 </table>
 
 <? endforeach; ?>
-
+<? endif; ?>
 </div>
 
 <? endforeach; ?>
+<? endif; ?>
 
 <div class="form-group">
 

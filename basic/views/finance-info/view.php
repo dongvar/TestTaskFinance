@@ -56,7 +56,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <h5 class="header5">Таблица задолженностей по органам государственных доходов</h5>
 
-<? foreach($taxOrgInfoModel->find()->where(['iin_bin' => $financeInfoModel->iin_bin])->all() as $taxOrgInfo) : ?>
+<? $taxOrgInfos = $taxOrgInfoModel->find()->where(['iin_bin' => $financeInfoModel->iin_bin])->all() ?>
+<? if(!empty($taxOrgInfos)) : ?> 
+<? foreach($taxOrgInfos as $taxOrgInfo) : ?>
 
 <div class="iblock">
 
@@ -89,7 +91,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <h5 class="header5">Таблица задолженностей по налогоплательщику и его структурным подразделениям</h5>
 
 
-<? foreach($taxPayerInfoModel->find()->where(['tax_org_info_id' => $taxOrgInfo->id])->all() as $taxPayerInfo) : ?>
+<? $taxPayerInfos = $taxPayerInfoModel->find()->where(['tax_org_info_id' => $taxOrgInfo->id])->all() ?>
+<? if(!empty($taxPayerInfos)) : ?> 
+<? foreach($taxPayerInfos as $taxPayerInfo) : ?>
 
 <table class="info1">
     <tr>
@@ -121,7 +125,9 @@ $this->params['breadcrumbs'][] = $this->title;
    <tbody>
    
 
-<? foreach($bccArrearsInfoModel->find()->where(['tax_payer_info_id' => $taxPayerInfo->id])->all() as $bccArrearsInfo) : ?>   
+<? $bccArrearsInfos = $bccArrearsInfoModel->find()->where(['tax_payer_info_id' => $taxPayerInfo->id])->all() ?>
+<? if(!empty($bccArrearsInfos)) : ?> 
+<? foreach($bccArrearsInfos as $bccArrearsInfo) : ?>   
    
     <tr>
       <td><?= $bccArrearsInfo->bcc ?> <?=$bccArrearsInfo->bcc_name_ru ?></td>
@@ -133,16 +139,15 @@ $this->params['breadcrumbs'][] = $this->title;
     </tr>
 
 <? endforeach; ?>   
-    
+<? endif; ?>    
   </tbody>
 </table>
 
 <? endforeach; ?>
+<? endif; ?>
 </div>
 <? endforeach; ?>
-
-
-
+<? endif; ?>
 
 <div class="finance-info-view">
     
