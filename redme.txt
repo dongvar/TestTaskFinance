@@ -1,0 +1,22 @@
+При проектировании использовались:
+
+Фреймворк Yii2 Basic
+База данных PostgreSQL 9.5
+PHP 5.6
+Веб сервер Appache 2.4
+
+Ссылка на репозиторий:
+https://github.com/dongvar/TestTaskFinance
+
+Установка:
+1. Перенести из репозитория папку basic на веб сервер
+2. Установить на сервере корневую веб директорию basic/web
+3. Создать базу данных. Сначало выполнить SQL-файл create_postgresql_db.sql, потом create_postgresql_tables.sql 
+
+Ключ для сервиса anti-captcha.com прописан в конфиге basic/config/params.php
+antiCaptchaKey => 7ab1a26549ec3798e80e61e3feaeed7e
+
+
+P.S.
+В процессе работы над проектом было замечено что сервис http://kgd.gov.kz/apps/services/culs-taxarrear-search-web
+некоторое время не работал.
