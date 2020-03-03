@@ -50,4 +50,17 @@ class TaxPayerInfo extends \yii\db\ActiveRecord
             'total_arrear' => 'Всего задолженности',
         ];
     }
+    
+    /*
+    * Инициализация модели данными из массива
+    */    
+    public function initAttributes($data, $taxOrgInfoId)
+    {        
+        $this->attributes = [                          
+                                    'tax_org_info_id' => $taxOrgInfoId,
+                                    'iin_bin' => $data['iinBin'],                                
+                                    'name_ru' => $data['nameRu'],                                                                        
+                                    'total_arrear' => $data['totalArrear'],                              
+                                ];
+    }
 }

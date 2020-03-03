@@ -57,4 +57,20 @@ class FinanceInfo extends \yii\db\ActiveRecord
             'social_health_insurance_arrear' => 'Задолженность по социальным отчислениям',
         ];
     }
+    
+    /*
+    * Инициализация модели данными из массива
+    */    
+    public function initAttributes($data)
+    {
+        $this->attributes = [
+                                'iin_bin' => $data['iinBin'],
+                                'name_ru' => $data['nameRu'],
+                                'total_arrear' => $data['totalArrear'],
+                                'total_tax_arrear' => $data['totalTaxArrear'],
+                                'pension_contribution_arrear' => $data['pensionContributionArrear'],
+                                'social_contribution_arrear' => $data['socialContributionArrear'],
+                                'social_health_insurance_arrear' => $data['socialHealthInsuranceArrear'],
+                            ];
+    }
 }

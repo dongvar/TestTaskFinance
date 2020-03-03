@@ -59,7 +59,8 @@ class SiteController extends Controller
         $transaction = Yii::$app->db->beginTransaction();
         
         // Созаем модель FinanceInfo и заполняем данными получеными с сайта источника
-        $financeInfo = $this->initFinanceInfo($financeData);
+        $financeInfo = new FinanceInfo();  
+        $financeInfo->initAttributes($financeData);
         
         $commit = true;
         
@@ -76,8 +77,9 @@ class SiteController extends Controller
                         
         foreach($financeData['taxOrgInfo'] as $taxOrgData) {
         
-            // Созаем модель TaxOrgInfo и заполняем данными получеными с сайта источника
-            $taxOrgInfo = $this->initTaxOrgInfo($taxOrgData, $financeData['iinBin']);                
+            // Созаем модель TaxOrgInfo и заполняем данными получеными с сайта источника     
+            $taxOrgInfo = new TaxOrgInfo();        
+            $taxOrgInfo->initAttributes($taxOrgData, $financeData['iinBin']);              
             if(!$taxOrgInfo->save()) {
                 $commit = false;
                 break 1;
@@ -85,16 +87,18 @@ class SiteController extends Controller
                 
             foreach($taxOrgData['taxPayerInfo'] as $taxPayerData) {
             
-                // Созаем модель TaxPayerInfo и заполняем данными получеными с сайта источника
-                $taxPayerInfo = $this->initTaxPayerInfo($taxPayerData, $taxOrgInfo->id);                    
+                // Созаем модель TaxPayerInfo и заполняем данными получеными с сайта источника                
+                $taxPayerInfo = new TaxPayerInfo();    
+                $taxPayerInfo->initAttributes($taxPayerData, $taxOrgInfo->id);                   
                 if(!$taxPayerInfo->save()) {
                     $commit = false;
                     break 2;
                 }
                  
                 // Созаем модель BccArrearsInfo и заполняем данными получеными с сайта источника   
-                foreach($taxPayerData['bccArrearsInfo'] as $bccArrearsData) {            
-                    $bccArrearsInfo = $this->initBccArrearsInfo($bccArrearsData, $taxPayerInfo->id);                        
+                foreach($taxPayerData['bccArrearsInfo'] as $bccArrearsData) {                                
+                    $bccArrearsInfo = new BccArrearsInfo(); 
+                    $bccArrearsInfo->initAttributes($bccArrearsData, $taxPayerInfo->id);   
                     if(!$bccArrearsInfo->save()) {
                         $commit = false;
                         break 3;
@@ -113,79 +117,7 @@ class SiteController extends Controller
                 return;
         }
     }
-    
-    /*
-    * Инициализация модели FinanceInfo данными из массива
-    */    
-    public function initFinanceInfo($data)
-    {
-        $financeInfo = new FinanceInfo();            
-        $financeInfo->attributes = [
-                                'iin_bin' => $data['iinBin'],
-                                'name_ru' => $data['nameRu'],
-                                'total_arrear' => $data['totalArrear'],
-                                'total_tax_arrear' => $data['totalTaxArrear'],
-                                'pension_contribution_arrear' => $data['pensionContributionArrear'],
-                                'social_contribution_arrear' => $data['socialContributionArrear'],
-                                'social_health_insurance_arrear' => $data['socialHealthInsuranceArrear'],
-                            ];      
-        return $financeInfo;
-    }
-    
-    /*
-    * Инициализация модели TaxOrgInfo данными из массива
-    */    
-    public function initTaxOrgInfo($data, $iinBin)
-    {
-        $taxOrgInfo = new TaxOrgInfo();            
-        $taxOrgInfo->attributes = [                                
-                                'iin_bin' => $iinBin,                                
-                                'name_ru' => $data['nameRu'],
-                                'char_code' => $data['charCode'],
-                                'report_acrual_date' => $data['reportAcrualDate'],
-                                'total_arrear' => $data['totalArrear'],
-                                'total_tax_arrear' => $data['totalTaxArrear'],
-                                'pension_contribution_arrear' => $data['pensionContributionArrear'],
-                                'social_contribution_arrear' => $data['socialContributionArrear'],
-                                'social_health_insurance_arrear' => $data['socialHealthInsuranceArrear'],                                
-                            ];      
-        return $taxOrgInfo;
-    }
-    
-    /*
-    * Инициализация модели TaxPayerInfo данными из массива
-    */    
-    public function initTaxPayerInfo($data, $taxOrgInfoId)
-    {
-        $taxPayerInfo = new TaxPayerInfo();            
-        $taxPayerInfo->attributes = [                          
-                                    'tax_org_info_id' => $taxOrgInfoId,
-                                    'iin_bin' => $data['iinBin'],                                
-                                    'name_ru' => $data['nameRu'],                                                                        
-                                    'total_arrear' => $data['totalArrear'],                              
-                                ];   
-        return $taxPayerInfo;
-    }
-    
-    /*
-    * Инициализация модели BccArrearsInfo данными из массива
-    */    
-    public function initBccArrearsInfo($data, $taxPayerInfoId)
-    {
-        $bccArrearsInfo = new BccArrearsInfo();            
-        $bccArrearsInfo->attributes = [                          
-                                        'tax_payer_info_id' => $taxPayerInfoId,
-                                        'bcc' => $data['bcc'],                                
-                                        'bcc_name_ru' => $data['bccNameRu'],                                                                        
-                                        'tax_arrear' => $data['taxArrear'],
-                                        'poena_arrear' => $data['poenaArrear'],
-                                        'percent_arrear' => $data['percentArrear'],
-                                        'fine_arrear' => $data['fineArrear'],
-                                        'total_arrear' => $data['totalArrear'],
-                                    ];      
-        return $bccArrearsInfo;
-    }
-    
+        
     /*
     * Удалят все данные связаные с определенным ИИН
     */ 

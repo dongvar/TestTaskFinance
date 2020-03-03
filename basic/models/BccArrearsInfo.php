@@ -58,4 +58,21 @@ class BccArrearsInfo extends \yii\db\ActiveRecord
             'total_arrear' => 'Всего задолженности',
         ];
     }
+    
+    /*
+    * Инициализация модели BccArrearsInfo данными из массива
+    */    
+    public function initAttributes($data, $taxPayerInfoId)
+    {
+        $this->attributes = [                          
+                                        'tax_payer_info_id' => $taxPayerInfoId,
+                                        'bcc' => $data['bcc'],                                
+                                        'bcc_name_ru' => $data['bccNameRu'],                                                                        
+                                        'tax_arrear' => $data['taxArrear'],
+                                        'poena_arrear' => $data['poenaArrear'],
+                                        'percent_arrear' => $data['percentArrear'],
+                                        'fine_arrear' => $data['fineArrear'],
+                                        'total_arrear' => $data['totalArrear'],
+                                    ];      
+    }
 }

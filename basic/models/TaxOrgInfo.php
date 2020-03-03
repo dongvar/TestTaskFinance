@@ -60,4 +60,22 @@ class TaxOrgInfo extends \yii\db\ActiveRecord
             'report_acrual_date' => 'По состоянию на',
         ];
     }
+    
+    /*
+    * Инициализация модели данными из массива
+    */    
+    public function initAttributes($data, $iinBin)
+    {        
+        $this->attributes = [                                
+                                'iin_bin' => $iinBin,                                
+                                'name_ru' => $data['nameRu'],
+                                'char_code' => $data['charCode'],
+                                'report_acrual_date' => $data['reportAcrualDate'],
+                                'total_arrear' => $data['totalArrear'],
+                                'total_tax_arrear' => $data['totalTaxArrear'],
+                                'pension_contribution_arrear' => $data['pensionContributionArrear'],
+                                'social_contribution_arrear' => $data['socialContributionArrear'],
+                                'social_health_insurance_arrear' => $data['socialHealthInsuranceArrear'],                                
+                            ];
+    }
 }
